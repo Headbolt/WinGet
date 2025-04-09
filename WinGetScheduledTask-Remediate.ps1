@@ -93,7 +93,7 @@ if (!$ScheduledTaskStatus)
 	try{
 		Write-Host "$ScheduledTaskName task does not exist. Creating Task."
 		$TaskAction  = New-ScheduledTaskAction -Execute 'powershell -executionpolicy bypass -command "winget upgrade --all --silent"'
-		$TaskTrigger = New-ScheduledTaskTrigger -Daily -At 3am
+		$TaskTrigger = New-ScheduledTaskTrigger -Weekly -DaysOfWeek Sunday -At 3am
 		$TaskSet     = New-ScheduledTaskSettingsSet
 		$TaskUser    = New-ScheduledTaskPrincipal -UserID "NT AUTHORITY\SYSTEM" -LogonType ServiceAccount -RunLevel Highest
 		Register-ScheduledTask -TaskName $ScheduledTaskName -TaskPath "\"  -Action $TaskAction -Settings $TaskSet -Trigger $TaskTrigger -Principal $TaskUser
