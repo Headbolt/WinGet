@@ -33,11 +33,9 @@ $ScheduledTaskStatus = Get-ScheduledTask | Where-object {$_.taskName -eq "$Sched
 #
 if ($ScheduledTaskStatus)
 {
-    Write-Host "Task already Exists. No Action Needed."
-    Write-Host Exit 0
+	Write-Host "Task already Exists. No Action Needed."
 } else {
-    Write-Host "Task does not exist, Remediation required"
-    Write-Host Exit 1
+	Write-Host "Task does not exist, Remediation required"
 	$ExitCode++
 }
 #
