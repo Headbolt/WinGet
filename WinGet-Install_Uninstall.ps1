@@ -12,7 +12,7 @@
 #			Otherwise Reg Searches for Uninstall commands in HKLM:\SOFTWARE\Microsoft
 #			may get redirected to HKLM:\SOFTWARE\Wow6432Node\Microsoft, resulting in uninstallers not being found
 #			so call powershell like this
-#			%windir%\SysNative\WindowsPowershell\v1.0\PowerShell.exe -executionpolicy bypass -command ./WinGetInstall_Uninstall.ps1
+#			%windir%\SysNative\WindowsPowershell\v1.0\PowerShell.exe -executionpolicy bypass -command ./Win-GetInstall_Uninstall.ps1
 #
 ###############################################################################################################################################
 #
