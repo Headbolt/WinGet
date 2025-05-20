@@ -12,7 +12,7 @@
 #
 # HISTORY
 #
-#   Version: 1.2 - 20/05/2025
+#   Version: 1.3 - 20/05/2025
 #
 #	09/04/2025 - V1.0 - Created by Headbolt
 #
@@ -22,6 +22,9 @@
 #	20/05/2025 - V1.2 - Updated by Headbolt
 #							Updated to remove logging to screen, and only log to file
 #
+#	20/05/2025 - V1.3 - Updated by Headbolt
+#							Updated logging
+#
 ###############################################################################################################################################
 #
 #   DEFINE VARIABLES & READ IN PARAMETERS
@@ -30,7 +33,7 @@
 #
 $global:PackageID="<Package-ID>" # Pull Package ID into a Global Variable
 #
-$global:ScriptVer="1.2" # Set ScriptVersion for logging
+$global:ScriptVer="1.3" # Set ScriptVersion for logging
 $global:ExitCode=2 # Setting Initial Exit Code 2
 $global:LocalLogFilePath="$Env:WinDir\temp\" # Set LogFile Patch
 $global:ScriptName="Windows | WinGet Detection" # Set ScriptName for logging
@@ -49,14 +52,14 @@ function Logging
 $LocalLogFileType="_Detection.log" # Set ActionType for Log File Path
 $global:LocalLogFilePath=$global:LocalLogFilePath+$global:PackageID+$LocalLogFileType # Construct Log File Path
 #
-#Start-Transcript $global:LocalLogFilePath # Start the logging
-#Clear-Host # Clear Screen
-#
-Write-Output '' >> $global:LocalLogFilePath # Outputting a Blank Line for Reporting Purposes
+Write-Output '' > $global:LocalLogFilePath # Outputting a Blank Line for Reporting Purposes
 Write-Output  '-----------------------------------------------' >> $global:LocalLogFilePath # Outputting a Dotted Line for Reporting Purposes
 Write-Output '' >> $global:LocalLogFilePath # Outputting a Blank Line for Reporting Purposes
 #
-Write-Output "Logging to $global:LocalLogFilePath" > $global:LocalLogFilePath
+Write-Output "Logging to $global:LocalLogFilePath" >> $global:LocalLogFilePath
+Write-Output '' >> $global:LocalLogFilePath # Outputting a Blank Line for Reporting Purposes
+#
+Write-Output "Logging Started at $(Get-Date)" >> $global:LocalLogFilePath
 Write-Output '' >> $global:LocalLogFilePath # Outputting a Blank Line for Reporting Purposes
 Write-Output "Script Version $global:ScriptVer" >> $global:LocalLogFilePath
 Write-Output '' >> $global:LocalLogFilePath # Outputting a Blank Line for Reporting Purposes
@@ -93,7 +96,8 @@ Write-Output "Exiting With Exit Code $global:ExitCode" >> $global:LocalLogFilePa
 Write-Output '' >> $global:LocalLogFilePath # Outputting a Blank Line for Reporting Purposes
 Write-Output  '-----------------------------------------------' >> $global:LocalLogFilePath # Outputting a Dotted Line for Reporting Purposes
 Write-Output '' >> $global:LocalLogFilePath # Outputting a Blank Line for Reporting Purposes
-#Stop-Transcript # Stop Logging
+Write-Output "Logging Stopped at $(Get-Date)" >> $global:LocalLogFilePath
+Write-Output '' >> $global:LocalLogFilePath # Outputting a Blank Line for Reporting Purposes
 #
 Exit $global:ExitCode
 #
@@ -137,6 +141,7 @@ If ( $global:PackageID ) # Check PackageID is set
 	#
 	If ( $Check )
 	{
+		Write-Host "Package ID $Check.Pattern Found"
 		Write-Output "Package ID $Check.Pattern Found" >> $global:LocalLogFilePath
 		$global:ExitCode=0
 		SectionEnd
