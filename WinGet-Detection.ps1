@@ -12,10 +12,15 @@
 #
 # HISTORY
 #
-#   Version: 1.0 - 09/04/2025
+#   Version: 1.1 - 20/05/2025
 #
 #	09/04/2025 - V1.0 - Created by Headbolt
 #
+#	20/05/2025 - V1.1 - Updated by Headbolt
+#							Updated to Include "--accept-source-agreements" during detection, so bypass agreements Y/N prompt
+#
+#	20/05/2025 - V1.2 - Updated by Headbolt
+#							Updated to remove logging to screen, and only log to file
 #
 ###############################################################################################################################################
 #
@@ -25,7 +30,7 @@
 #
 $global:PackageID="<Package-ID>" # Pull Package ID into a Global Variable
 #
-$global:ScriptVer="1.0" # Set ScriptVersion for logging
+$global:ScriptVer="1.2" # Set ScriptVersion for logging
 $global:ExitCode=2 # Setting Initial Exit Code 2
 $global:LocalLogFilePath="$Env:WinDir\temp\" # Set LogFile Patch
 $global:ScriptName="Windows | WinGet Detection" # Set ScriptName for logging
@@ -44,18 +49,20 @@ function Logging
 $LocalLogFileType="_Detection.log" # Set ActionType for Log File Path
 $global:LocalLogFilePath=$global:LocalLogFilePath+$global:PackageID+$LocalLogFileType # Construct Log File Path
 #
-Start-Transcript $global:LocalLogFilePath # Start the logging
-Clear-Host # Clear Screen
-SectionEnd
-Write-Host "Logging to $global:LocalLogFilePath"
-Write-Host ''# Outputting a Blank Line for Reporting Purposes
-Write-Host "Script Version $global:ScriptVer"
-Write-Host ''# Outputting a Blank Line for Reporting Purposes
-Write-Host 'Install Switch is'$Install
-Write-Host 'Uninstall Switch is'$Uninstall
+#Start-Transcript $global:LocalLogFilePath # Start the logging
+#Clear-Host # Clear Screen
+#
+Write-Output '' >> $global:LocalLogFilePath # Outputting a Blank Line for Reporting Purposes
+Write-Output  '-----------------------------------------------' >> $global:LocalLogFilePath # Outputting a Dotted Line for Reporting Purposes
+Write-Output '' >> $global:LocalLogFilePath # Outputting a Blank Line for Reporting Purposes
+#
+Write-Output "Logging to $global:LocalLogFilePath" > $global:LocalLogFilePath
+Write-Output '' >> $global:LocalLogFilePath # Outputting a Blank Line for Reporting Purposes
+Write-Output "Script Version $global:ScriptVer" >> $global:LocalLogFilePath
+Write-Output '' >> $global:LocalLogFilePath # Outputting a Blank Line for Reporting Purposes
 If ( $global:PackageID )
 {
-	Write-Host 'PackageID is'$global:PackageID
+	Write-Output "PackageID is $global:PackageID" >> $global:LocalLogFilePath
 }
 #
 }     
@@ -67,9 +74,9 @@ If ( $global:PackageID )
 function SectionEnd
 {
 #
-Write-Host '' # Outputting a Blank Line for Reporting Purposes
-Write-Host  '-----------------------------------------------' # Outputting a Dotted Line for Reporting Purposes
-Write-Host '' # Outputting a Blank Line for Reporting Purposes
+Write-Output '' >> $global:LocalLogFilePath # Outputting a Blank Line for Reporting Purposes
+Write-Output  '-----------------------------------------------' >> $global:LocalLogFilePath # Outputting a Dotted Line for Reporting Purposes
+Write-Output '' >> $global:LocalLogFilePath # Outputting a Blank Line for Reporting Purposes
 #
 }
 #
@@ -80,16 +87,15 @@ Write-Host '' # Outputting a Blank Line for Reporting Purposes
 Function ScriptEnd
 {
 #
-Write-Host Ending Script $global:ScriptName
-Write-Host '' # Outputting a Blank Line for Reporting Purposes
-Write-Host Exiting With Exit Code $global:ExitCode
-Write-Host ''# Outputting a Blank Line for Reporting Purposes
-Write-Host  '-----------------------------------------------' # Outputting a Dotted Line for Reporting Purposes
-Write-Host ''# Outputting a Blank Line for Reporting Purposes
-Stop-Transcript # Stop Logging
-
+Write-Output "Ending Script $global:ScriptName" >> $global:LocalLogFilePath
+Write-Output '' >> $global:LocalLogFilePath # Outputting a Blank Line for Reporting Purposes
+Write-Output "Exiting With Exit Code $global:ExitCode" >> $global:LocalLogFilePath
+Write-Output '' >> $global:LocalLogFilePath # Outputting a Blank Line for Reporting Purposes
+Write-Output  '-----------------------------------------------' >> $global:LocalLogFilePath # Outputting a Dotted Line for Reporting Purposes
+Write-Output '' >> $global:LocalLogFilePath # Outputting a Blank Line for Reporting Purposes
+#Stop-Transcript # Stop Logging
+#
 Exit $global:ExitCode
-
 #
 }
 #
@@ -107,7 +113,7 @@ Logging
 #
 SectionEnd
 #
-Write-Host 'Finding Local WinGet Install'
+Write-Output 'Finding Local WinGet Install' >> $global:LocalLogFilePath
 #
 $ResolveWingetPath = Resolve-Path "C:\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_*_x64__8wekyb3d8bbwe" # Search for winget
 #
@@ -118,35 +124,35 @@ if ($ResolveWingetPath)
 #
 $Winget = $WingetPath + "\winget.exe"
 #
-Write-Host "Winget path is"
-Write-Host "$Winget"
+Write-Output "Winget path is" >> $global:LocalLogFilePath
+Write-Output "$Winget" >> $global:LocalLogFilePath
 #
 SectionEnd  
 #
 If ( $global:PackageID ) # Check PackageID is set
 {
-	Write-Host 'Attempting Detection'
+	Write-Output 'Attempting Detection' >> $global:LocalLogFilePath
 	SectionEnd
-	$Check=(& $Winget list | Select-String $global:PackageID)
+	$Check=(& $Winget list --accept-source-agreements | Select-String $global:PackageID)
 	#
 	If ( $Check )
 	{
-		Write-Host Package ID $Check.Pattern Found
+		Write-Output "Package ID $Check.Pattern Found" >> $global:LocalLogFilePath
 		$global:ExitCode=0
 		SectionEnd
 	}
 	else
 	{
-		Write-Host Package ID $Check.Pattern NOT Found
+		Write-Output "Package ID $Check.Pattern NOT Found" >> $global:LocalLogFilePath
 		$global:ExitCode=1
 		SectionEnd
 	}
 }
 else
 {
-	Write-Host 'PackageID not set, Detection cannot continue'
+	Write-Output 'PackageID not set, Detection cannot continue' >> $global:LocalLogFilePath
+	$global:ExitCode=1
 	SectionEnd
-
 }
 #
 ScriptEnd
