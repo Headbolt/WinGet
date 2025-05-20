@@ -12,7 +12,7 @@
 #
 # HISTORY
 #
-#   Version: 1.1 - 20/05/2025
+#   Version: 1.2 - 20/05/2025
 #
 #	09/04/2025 - V1.0 - Created by Headbolt
 #
