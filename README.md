@@ -6,13 +6,19 @@ Use the IntuneWin file as the package
 Install Command should be.
 
 %windir%\SysNative\WindowsPowershell\v1.0\PowerShell.exe -executionpolicy bypass -command ./WinGet-Install_Uninstall.ps1 -install -PackageID <PackageID>
+
 eg.
+
 %windir%\SysNative\WindowsPowershell\v1.0\PowerShell.exe -executionpolicy bypass -command ./WinGet-Install_Uninstall.ps1 -install -PackageID JAMSoftware.TreeSize.Free
 
+
+
 UnInstall Command should be
+
 %windir%\SysNative\WindowsPowershell\v1.0\PowerShell.exe -executionpolicy bypass -command ./WinGet-Install_Uninstall.ps1 -uninstall -PackageID <PackageID>
 
 eg.
+
 %windir%\SysNative\WindowsPowershell\v1.0\PowerShell.exe -executionpolicy bypass -command ./WinGet-Install_Uninstall.ps1 -uninstall -PackageID JAMSoftware.TreeSize.Free
 
 Take a copy of WinGet-Detection.ps1
