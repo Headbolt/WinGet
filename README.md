@@ -24,7 +24,9 @@ eg.
 Take a copy of WinGet-Detection.ps1
 Edit the copy and set the package ID on the line
 $global:PackageID=<PackageID>
+
 eg.
+
 $global:PackageID="JAMSoftware.TreeSize.Free"
 
 Then Scope to Machines.
