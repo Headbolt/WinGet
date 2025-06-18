@@ -3,7 +3,8 @@ How to Use
 Create an App in Intune as a Win32 App
 Use the IntuneWin file as the package
 
-Install Command should be
+Install Command should be.
+
 %windir%\SysNative\WindowsPowershell\v1.0\PowerShell.exe -executionpolicy bypass -command ./WinGet-Install_Uninstall.ps1 -install -PackageID <PackageID>
 eg.
 %windir%\SysNative\WindowsPowershell\v1.0\PowerShell.exe -executionpolicy bypass -command ./WinGet-Install_Uninstall.ps1 -install -PackageID JAMSoftware.TreeSize.Free
